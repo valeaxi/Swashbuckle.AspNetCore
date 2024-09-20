@@ -107,7 +107,9 @@ namespace Swashbuckle.AspNetCore.ApiTesting
                     ? (OpenApiSchema)openApiDocument.ResolveReference(parameterSpec.Schema.Reference)
                     : parameterSpec.Schema;
 
-                if (!schema.TryParse(value, out object typedValue))
+                if (!(schema.TryParse(value, out _) ||
+                     schema.AllOf.All(a => a.TryParse(value, out _)) ||
+                     schema.AnyOf.Any(a => a.TryParse(value, out _))))
                     throw new RequestDoesNotMatchSpecException($"Parameter '{parameterSpec.Name}' is not of type '{parameterSpec.Schema.TypeIdentifier()}'");
             }
         }
