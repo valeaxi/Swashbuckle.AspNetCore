@@ -65,19 +65,20 @@ namespace Swashbuckle.AspNetCore.ApiTesting
 
         internal static string TypeIdentifier(this OpenApiSchema schema)
         {
-            var idBuilder = new StringBuilder(schema.Type);
+            var allOfIds = schema.AllOf.Select(allOfSchema => allOfSchema.Reference.Id).ToArray();
+            var anyOfIds = schema.AnyOf.Select(allOfSchema => allOfSchema.Reference.Id).ToArray();
+
+            if (allOfIds.Any() || anyOfIds.Any())
+            {
+                return "allOf([" + string.Join(", ", allOfIds) + "]), anyOf([" + string.Join(", ", anyOfIds) + "])";
+            }
 
             if (schema.Type == "array" && schema.Items != null)
             {
-                idBuilder.Append($"[{schema.Items.Type}]");
-
-                return idBuilder.ToString();
+                return $"array[{schema.Items.Type}]";
             }
 
-            var allOfIds = schema.AllOf.Select(allOfSchema => allOfSchema.Reference.Id);
-            var anyOfIds = schema.AnyOf.Select(allOfSchema => allOfSchema.Reference.Id);
-
-            return "allOf([" + string.Join(", ", allOfIds) + "]), anyOf([" + string.Join(", ", anyOfIds) + "])";
+            return schema.Type ?? schema.Reference?.Id ?? string.Empty;
         }
     }
 }

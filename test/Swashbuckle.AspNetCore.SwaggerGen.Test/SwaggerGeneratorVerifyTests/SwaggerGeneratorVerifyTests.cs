@@ -291,7 +291,9 @@ public class SwaggerGeneratorVerifyTests
             apiDescriptions: new[]
             {
                 ApiDescriptionFactory.Create<FakeController>(
+#pragma warning disable CS0612 // Type or member is obsolete
                     c => nameof(c.ActionWithObsoleteAttribute), groupName: "v1", httpMethod: "POST", relativePath: "resource"),
+#pragma warning restore CS0612 // Type or member is obsolete
             }
         );
 

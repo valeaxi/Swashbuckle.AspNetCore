@@ -419,7 +419,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.Test
                 apiDescriptions: new[]
                 {
                     ApiDescriptionFactory.Create<FakeController>(
+#pragma warning disable CS0612 // Type or member is obsolete
                         c => nameof(c.ActionWithObsoleteAttribute), groupName: "v1", httpMethod: "POST", relativePath: "resource"),
+#pragma warning restore CS0612 // Type or member is obsolete
                 }
             );
 
@@ -1144,7 +1146,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen.Test
                         c => nameof(c.ActionWithNoParameters), groupName: "v1", httpMethod: "POST", relativePath: "resource"),
 
                     ApiDescriptionFactory.Create<FakeController>(
+#pragma warning disable CS0612 // Type or member is obsolete
                         c => nameof(c.ActionWithObsoleteAttribute), groupName: "v1", httpMethod: "GET", relativePath: "resource")
+#pragma warning restore CS0612 // Type or member is obsolete
                 },
                 options: new SwaggerGeneratorOptions
                 {
